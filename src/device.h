@@ -48,9 +48,11 @@ public:
     void createLogicalDevice() {
         QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
+        g_QueueFamily = indices.graphicsFamily.value();
+
         VkDeviceQueueCreateInfo queueCreateInfo{};
         queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+        queueCreateInfo.queueFamilyIndex = g_QueueFamily;
         queueCreateInfo.queueCount = 1;
 
         float queuePriority = 1.0f;
@@ -212,6 +214,8 @@ public:
     
     VkQueue graphicsQueue;
     VkQueue presentQueue;
+
+    uint32_t g_QueueFamily;
 
     WindowManager* window;
 

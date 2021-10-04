@@ -83,9 +83,9 @@ public:
     }
 
     void createImageViews() {        
-        swapChainImageViews.resize(swapChainImages.size());
+        swapChainImageViews.resize(Resource::countFrames);
 
-        for (size_t i = 0; i < swapChainImages.size(); i++) {
+        for (size_t i = 0; i < Resource::countFrames; i++) {
 
             VkImageViewCreateInfo createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;

@@ -13,7 +13,7 @@ public:
     {
         
     }
-    virtual ~GameObject(){
+    ~GameObject(){
         
     }
     void Init(){
@@ -23,17 +23,17 @@ public:
 
     void Update(float deltaTime)
     {
-        updateUniformBuffer();
+        updateUniformBuffer(deltaTime);
     }
     
     void setVertex(std::vector<Vertex> vertices)
     {
-        this->vertices = vertices;
+        this->m_model->vertices = vertices;
     }
     
     void setIndices(std::vector<uint16_t> indices)
     {
-        this->indices = indices;
+        this->m_model->indices = indices;
     }
 
     void SetPosition(glm::vec3 position)
@@ -66,7 +66,7 @@ public:
     std::string vertFile, fragFile;
 
 private :
-    void updateUniformBuffer() {
+    void updateUniformBuffer(float deltaTime) {
         static auto startTime = std::chrono::high_resolution_clock::now();
 
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -78,10 +78,13 @@ private :
         ubo.view = camera->view;
         ubo.proj = camera->proj;
 
+        ubo.sunPos = Resource::sunPos;
+
         void* data;
-        vkMapMemory(device->device, uniformBuffersMemory[Resource::currentImage], 0, sizeof(ubo), 0, &data);
+        vkMapMemory(device->device, pipeline->uniformBuffersMemory[Resource::currentImage], 0, sizeof(ubo), 0, &data);
             memcpy(data, &ubo, sizeof(ubo));
-        vkUnmapMemory(device->device, uniformBuffersMemory[Resource::currentImage]);
+        vkUnmapMemory(device->device, pipeline->uniformBuffersMemory[Resource::currentImage]);
+
     }
 
     glm::mat4 model;

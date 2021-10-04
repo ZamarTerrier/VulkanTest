@@ -10,7 +10,7 @@ public:
     Camera(float width, float height){
 
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        proj = glm::perspective(glm::radians(45.0f), width / (float) height, 0.1f, 100.0f);
+        proj = glm::perspective(glm::radians(45.0f), width / (float) height, 0.1f, ViewDistance);
         proj[1][1] *= -1;
 
 
@@ -59,16 +59,25 @@ public:
     {
 
         const float cameraSpeed = 0.2f; // настройте по вашему усмотрению
-        if(Resource::pressed[GLFW_KEY_W])
-            cameraPos += cameraSpeed * cameraFront * deltaTime;
-        if(Resource::pressed[GLFW_KEY_S])
-            cameraPos -= cameraSpeed * cameraFront * deltaTime;
-        if(Resource::pressed[GLFW_KEY_A])
-            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
-        if(Resource::pressed[GLFW_KEY_D])
-            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
+        float currSpeed;
+        
+        if(Resource::pressed[GLFW_KEY_LEFT_SHIFT])
+            currSpeed = cameraSpeed * 4;
+        else
+            currSpeed = cameraSpeed;
 
-        processMouse(WindowManager::xpos, WindowManager::ypos);
+        if(Resource::pressed[GLFW_KEY_W])
+            cameraPos += currSpeed * cameraFront * deltaTime;
+        if(Resource::pressed[GLFW_KEY_S])
+            cameraPos -= currSpeed * cameraFront * deltaTime;
+        if(Resource::pressed[GLFW_KEY_A])
+            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * currSpeed * deltaTime;
+        if(Resource::pressed[GLFW_KEY_D])
+            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * currSpeed * deltaTime;
+
+            
+        if(!Resource::showCursor)
+            processMouse(WindowManager::xpos, WindowManager::ypos);
         
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
@@ -82,6 +91,8 @@ public:
     glm::mat4 model;
     glm::mat4 view;
     glm::mat4 proj;
+
+    inline static float ViewDistance = 600.f;
 
 private:
     float yaw;

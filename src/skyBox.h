@@ -19,35 +19,35 @@ public:
 
         vertices = {
             //Back
-            {{-1.0f, -1.0f, 1.0f}, colorBottom},
-            {{1.0f, -1.0f, 1.0f}, colorBottom},
-            {{1.0f, 1.0f, 1.0f}, colorTop},        
-            {{-1.0f, 1.0f, 1.0f},colorTop},
+            {{-1.0f, -1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{1.0f, -1.0f, 1.0f}, {0.0f,0.0f,0.0f},colorBottom},
+            {{1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f},colorTop},        
+            {{-1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f},colorTop},
             //Front
-            {{-1.0f, -1.0f, -1.0f}, colorBottom},
-            {{1.0f, -1.0f, -1.0f}, colorBottom},
-            {{1.0f, 1.0f, -1.0f}, colorTop},        
-            {{-1.0f, 1.0f, -1.0f}, colorTop},
+            {{-1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{1.0f, 1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorTop},        
+            {{-1.0f, 1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorTop},
             //Left
-            {{-1.0f, -1.0f, -1.0f}, colorBottom},
-            {{-1.0f, 1.0f, -1.0f}, colorTop},
-            {{-1.0f, 1.0f, 1.0f}, colorTop},        
-            {{-1.0f, -1.0f, 1.0f}, colorBottom},
+            {{-1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{-1.0f, 1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorTop},
+            {{-1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorTop},        
+            {{-1.0f, -1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
             //Right
-            {{1.0f, -1.0f, -1.0f}, colorBottom},
-            {{1.0f, 1.0f, -1.0f}, colorTop},
-            {{1.0f, 1.0f, 1.0f}, colorTop},        
-            {{1.0f, -1.0f, 1.0f}, colorBottom},
+            {{1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{1.0f, 1.0f, -1.0f},{0.0f,0.0f,0.0f}, colorTop},
+            {{1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorTop},        
+            {{1.0f, -1.0f, 1.0f},{0.0f,0.0f,0.0f}, colorBottom},
             //Top
-            {{-1.0f, 1.0f, -1.0f}, colorTop},
-            {{-1.0f, 1.0f, 1.0f}, colorTop},       
-            {{1.0f, 1.0f, 1.0f}, colorTop},
-            {{1.0f, 1.0f, -1.0f}, colorTop}, 
+            {{-1.0f, 1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorTop},
+            {{-1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorTop},       
+            {{1.0f, 1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorTop},
+            {{1.0f, 1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorTop}, 
             //Bottom
-            {{-1.0f, -1.0f, -1.0f}, colorBottom},
-            {{-1.0f, -1.0f, 1.0f}, colorBottom},       
-            {{1.0f, -1.0f, 1.0f}, colorBottom},
-            {{1.0f, -1.0f, -1.0f}, colorBottom},
+            {{-1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{-1.0f, -1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorBottom},       
+            {{1.0f, -1.0f, 1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
+            {{1.0f, -1.0f, -1.0f}, {0.0f,0.0f,0.0f}, colorBottom},
         };
 
         indices = {
@@ -61,7 +61,7 @@ public:
 
         go = new GameObject(device, camera);
         go->SetShadersName(paths.vertShader, paths.fragShader);
-        go->SetSize(50);
+        go->SetSize(Camera::ViewDistance / 2);
         go->setVertex(vertices);
         go->setIndices(indices);
     }

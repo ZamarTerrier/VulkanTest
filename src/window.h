@@ -35,6 +35,7 @@ public:
         createInstance();
         setupDebugMessenger();
         createSurface();
+
     }
 
     void createInstance() {
@@ -133,7 +134,7 @@ public:
         if(action == GLFW_PRESS)
             Resource::pressed[key] = true;
         else if(action == GLFW_RELEASE)
-            Resource::pressed[key] = false;
+            Resource::pressed[key] = false;    
 
         // if (key == GLFW_KEY_E && action == GLFW_PRESS)
         //     activate_airship();

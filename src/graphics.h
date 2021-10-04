@@ -25,6 +25,7 @@ public:
     }
     ~Graphics()
     {
+
         delete renderer;
 
         vkDestroyImageView(device->device, depthImageView, nullptr);
@@ -35,6 +36,7 @@ public:
         for (auto framebuffer : swapChainFramebuffers) {
             vkDestroyFramebuffer(device->device, framebuffer, nullptr);
         }
+
     }
 
     void SetGameObject(GameObject* go)
@@ -47,15 +49,14 @@ public:
         createFramebuffers(); 
         for(auto go : gameObjects)
         {
-            renderer->createGraphicsPipeline(go->vertFile, go->fragFile, go);  
+            renderer->createGraphicsPipeline(go->vertFile, go->fragFile, go->pipeline);  
             go->Init();
         }
         createCommandBuffers();
-        setCommandBuffers();
     }
     
     void createFramebuffers() {
-        swapChainFramebuffers.resize(swapchain->swapChainImageViews.size());
+        swapChainFramebuffers.resize(Resource::countFrames);
         for (size_t i = 0; i < swapchain->swapChainImageViews.size(); i++) {
             std::array<VkImageView, 2> attachments = {
                 swapchain->swapChainImageViews[i],
@@ -86,7 +87,7 @@ public:
 
 
     void createCommandBuffers() {
-        commandBuffers.resize(swapChainFramebuffers.size());
+        commandBuffers.resize(Resource::countFrames);
 
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -123,13 +124,13 @@ public:
             clearValues[0].color = {{0.0f, 0.0f, 0.0f, 1.0f}};
             clearValues[1].depthStencil = {1.0f, 0};
 
-            renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());;
+            renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
             renderPassInfo.pClearValues = clearValues.data();
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
             for(auto go : gameObjects)
             {
-                vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, go->graphicsPipeline);
+                vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, go->pipeline->graphicsPipeline);
 
                 go->Draw(commandBuffers[i], i);
             }
@@ -153,7 +154,10 @@ public:
 
     std::vector<GameObject*> gameObjects;
 
+
     VkImage depthImage;
     VkDeviceMemory depthImageMemory;
     VkImageView depthImageView;
+
+    bool show = true;
 };

@@ -6,7 +6,7 @@
 
 #include "resource.h"
 
-#include "gameObject.h"
+#include "pipeline.h"
 
 class Renderer{
 public:
@@ -80,6 +80,7 @@ public:
         dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
 
         std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
+        
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
@@ -94,9 +95,7 @@ public:
         }
     }
     
-    void createGraphicsPipeline(std::string vertFile, std::string fragFile, GameObject* go) {
-        
-        go->createDescriptorSetLayout();
+    void createGraphicsPipeline(std::string vertFile, std::string fragFile, Pipeline* pipeline) {
 
         auto vertShaderCode = readFile(vertFile);
         auto fragShaderCode = readFile(fragFile);
@@ -188,10 +187,10 @@ public:
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = &go->descriptorSetLayout;
+        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout;
         pipelineLayoutInfo.pushConstantRangeCount = 0;
 
-        if (vkCreatePipelineLayout(device->device, &pipelineLayoutInfo, nullptr, &go->pipelineLayout) != VK_SUCCESS) {
+        if (vkCreatePipelineLayout(device->device, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout) != VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
         }
 
@@ -205,7 +204,7 @@ public:
         pipelineInfo.pRasterizationState = &rasterizer;
         pipelineInfo.pMultisampleState = &multisampling;
         pipelineInfo.pColorBlendState = &colorBlending;
-        pipelineInfo.layout = go->pipelineLayout;
+        pipelineInfo.layout = pipeline->pipelineLayout;
         pipelineInfo.renderPass = renderPass;
         pipelineInfo.subpass = 0;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
@@ -224,7 +223,7 @@ public:
 
         pipelineInfo.pDepthStencilState = &depthStencil;
 
-        if (vkCreateGraphicsPipelines(device->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &go->graphicsPipeline) != VK_SUCCESS) {
+        if (vkCreateGraphicsPipelines(device->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline) != VK_SUCCESS) {
             throw std::runtime_error("failed to create graphics pipeline!");
         }
 

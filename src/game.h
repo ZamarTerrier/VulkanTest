@@ -46,13 +46,13 @@ public:
 
         gameObject = new GameObject(device, camera);
         gameObject->SetShadersName("shaders/vert.spv","shaders/frag.spv");    
-        gameObject->SetSize(2);      
+        gameObject->SetSize(glm::vec3(2.0f,2.0f,2.0f));      
         gameObject->SetPosition({0,0,6});  
         gameObject->setVertex(pObject.vertices);
         gameObject->setIndices(pObject.indices);
 
         gameObject2 = new GameObject(device, camera);      
-        gameObject2->SetSize(2);
+        gameObject2->SetSize(glm::vec3(2.0f,2.0f,2.0f));
         gameObject2->SetShadersName("shaders/vert.spv","shaders/frag2.spv");
         gameObject2->setVertex(pObject.vertices);
         gameObject2->setIndices(pObject.indices);
@@ -103,7 +103,7 @@ public:
     void Update(float time){
 
         camera->Update(time);
-        gameObject->SetRotate({0,0,10});
+        gameObject->Rotating(glm::vec3(0,0,1) * time);
         gameObject->Update(time);
         //gameObject2->Update(time);
 

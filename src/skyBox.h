@@ -61,7 +61,8 @@ public:
 
         go = new GameObject(device, camera);
         go->SetShadersName(paths.vertShader, paths.fragShader);
-        go->SetSize(Camera::ViewDistance / 2);
+        float size = Camera::ViewDistance / 2;
+        go->SetSize(glm::vec3(size,size,size));
         go->setVertex(vertices);
         go->setIndices(indices);
     }

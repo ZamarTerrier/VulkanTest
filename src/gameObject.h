@@ -9,7 +9,7 @@
 
 class GameObject : public Entity{
 public:
-    GameObject(Device* device, Camera* camera) : Entity(device, camera), size(1)
+    GameObject(Device* device, Camera* camera) : Entity(device, camera), size(1.0f)
     {
         model = glm::mat4(1.0f);
     }
@@ -23,6 +23,7 @@ public:
 
     void Update(float deltaTime)
     {
+        AppyTransforms(deltaTime);
         updateUniformBuffer(deltaTime);
     }
     
@@ -40,7 +41,21 @@ public:
     {
         position /= 10;
         this->position = position;
-        model = glm::translate(glm::mat4(1.0f), position);
+    }
+
+    
+    void AppyTransforms(float deltaTime)
+    {
+
+        glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), size);
+        glm::mat4 rotationMatrix;
+        rotationMatrix = glm::rotate(rotationMatrix, rotate.x, glm::vec3(1,0,0));
+        rotationMatrix = glm::rotate(rotationMatrix, rotate.y, glm::vec3(0,1,0));
+        rotationMatrix = glm::rotate(rotationMatrix, rotate.z, glm::vec3(0,0,1));
+        glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), position);
+
+        model = translateMatrix * rotationMatrix * scaleMatrix * deltaTime;
+
     }
 
     glm::vec3 GetPosition()
@@ -48,7 +63,7 @@ public:
         return position * 10.0f;
     }
 
-    void SetSize(float size)
+    void SetSize(glm::vec3 size)
     {
         this->size = size;
     }
@@ -59,12 +74,18 @@ public:
         this->fragFile = fragFile;
     }
 
-    void SetRotate(glm::vec3 rotation)
+    void SetRotation(glm::vec3 rotation)
+    {   
+        rotation /=10.0f;
+        this->rotate = rotation;
+
+    }
+
+    void Rotating(glm::vec3 rotation)
     {   
         rotation /=10.0f;
         this->rotate += rotation;
 
-        model = glm::rotate(model, 0.001f, rotate);
     }
 
     glm::vec3 GetRotate()
@@ -83,7 +104,6 @@ private :
         
         UniformBufferObject ubo{};
         ubo.model = model;
-        ubo.size = size;
         ubo.view = camera->view;
         ubo.proj = camera->proj;
 
@@ -96,7 +116,7 @@ private :
 
     }
 
-    float size;
+    glm::vec3 size;
 
     glm::mat4 model;
     glm::vec3 position;

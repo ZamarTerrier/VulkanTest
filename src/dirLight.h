@@ -42,9 +42,10 @@ public:
     void Update(float deltaTime)
     {
         int m_del = 1000;
+        float resultAngle = angle / m_del;
         sunPos = target;
-        sunPos.x -= distance * cos(angle / m_del);
-        sunPos.z -= distance * sin(angle / m_del);
+        sunPos.x -= distance * cos(resultAngle);
+        sunPos.z -= distance * sin(resultAngle);
 
         angle ++;
 
@@ -52,8 +53,8 @@ public:
             angle = 0;
 
         go->SetPosition(sunPos);
-        go->SetRotate(glm::vec3(0,0,0.001f));      
-        Resource::sunDir = glm::vec3(cos(angle / m_del), -0.5f, sin(angle / m_del));
+        go->SetRotation(glm::vec3(0,-resultAngle + 90,0) * 10.0f);      
+        Resource::sunDir = glm::vec3(cos(resultAngle), -0.5f, sin(resultAngle));
         go->Update(deltaTime);
     }
 

@@ -62,7 +62,7 @@ public:
         float currSpeed;
         
         if(Resource::pressed[GLFW_KEY_LEFT_SHIFT])
-            currSpeed = cameraSpeed * 4;
+            currSpeed = cameraSpeed * 10;
         else
             currSpeed = cameraSpeed;
 
@@ -82,6 +82,11 @@ public:
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 
+    }
+
+    glm::vec3 GetPosition()
+    {
+        return cameraPos * 10.f;
     }
 
     glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  10.0f);

@@ -72,7 +72,7 @@ public:
 
     void Update(float deltaTime)
     {
-        glm::vec3 pos = camera->cameraPos * 10.0f;
+        glm::vec3 pos = camera->GetPosition();
         go->SetPosition(pos);
         go->Update(deltaTime);
     }

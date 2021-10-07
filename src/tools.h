@@ -441,7 +441,7 @@ private:
                 s = (float)j / sectorCount;
                 t = (float)i / stackCount;
                 
-                pObject.vertices.push_back({{x,y,z}, {s,t,t}});
+                pObject.vertices.push_back({{x,y,z}, {1.0f,1.0f,1.0f}, {s,t,t}});
             }
         }
 
@@ -459,7 +459,7 @@ private:
                 float uy = pObject.vertices[pObject.vertices.size() - 1 - k].pos.y;
                 float uz = pObject.vertices[pObject.vertices.size() - 1 - k].pos.z;
 
-                pObject.vertices.push_back({{ux * radius * 10, uy * radius * 10, h},{(float)j / sectorCount, t , t}}); 
+                pObject.vertices.push_back({{ux * radius * 10, uy * radius * 10, h}, {1.0f,1.0f,1.0f}, {(float)j / sectorCount, t , t}}); 
             }
         }
 
@@ -485,7 +485,7 @@ private:
                 s = (float)j / sectorCount;
                 t = (float)i / stackCount;
                 
-                pObject.vertices.push_back({{x,y,z - height}, {s,t,t}});
+                pObject.vertices.push_back({{x,y,z - height},  {1.0f,1.0f,1.0f}, {s,t,t}});
             }
         }
 

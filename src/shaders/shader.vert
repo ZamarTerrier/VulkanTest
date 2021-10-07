@@ -20,5 +20,6 @@ void main() {
     gl_Position = ubo.proj * ubo.view * ubo.model * vec4(inPosition * ubo.size, 1.0);
     fragColor = inColor;
     fragNormal = normal;
+
     sunDir = ubo.sunDir;
 }

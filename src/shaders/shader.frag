@@ -6,7 +6,6 @@ layout(location = 2) in vec3 sunDir;
 
 layout(location = 0) out vec4 outColor;
 
-const vec3 dirrection = vec3(1,-3,-1);
 const float ambient = 0.02f;
 
 void main() {

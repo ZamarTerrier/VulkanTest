@@ -27,6 +27,8 @@ public:
         go->setVertex(pObject.vertices);
         go->setIndices(pObject.indices);
 
+        distance = 250;
+
     }
     ~DirLight()
     {
@@ -34,16 +36,40 @@ public:
     }
     void Init()
     {
-        Resource::sunPos = glm::vec3(1,-1,1);
+        Resource::sunDir = glm::vec3(1,-1,1);
     }
+
     void Update(float deltaTime)
     {
-        go->SetPosition(Resource::sunPos * 10.0f);
+        int m_del = 1000;
+        sunPos = target;
+        sunPos.x -= distance * cos(angle / m_del);
+        sunPos.z -= distance * sin(angle / m_del);
+
+        angle ++;
+
+        if(angle >=360 * m_del)
+            angle = 0;
+
+        go->SetPosition(sunPos);
+        go->SetRotate(glm::vec3(0,0,0.001f));      
+        Resource::sunDir = glm::vec3(cos(angle / m_del), -0.5f, sin(angle / m_del));
         go->Update(deltaTime);
+    }
+
+    void SetTarget(glm::vec3 pos)
+    {
+        target = pos;
     }
 
     GameObject* go;
 
     Camera* camera;
+
+    float distance;
+    float angle;
+
+    glm::vec3 sunPos;
+    glm::vec3 target;
 
 };

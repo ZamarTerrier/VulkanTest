@@ -58,6 +58,11 @@ public:
 
         createSyncObjects();
 
+        v[0] = Resource::sunDir.x;
+        v[1] = Resource::sunDir.y; 
+        v[2] =  Resource::sunDir.z;
+
+
     }
     void Run() {
         graphics->setCommandBuffers();
@@ -161,7 +166,12 @@ private:
         auto currentTime = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count() / 1000;
 
+
         game->Update(time);
+
+        v[0] = Resource::sunDir.x;
+        v[1] = Resource::sunDir.y; 
+        v[2] =  Resource::sunDir.z;
 
         if(Resource::pressed[GLFW_KEY_LEFT_CONTROL] && !menuSwaped)  
         { 
@@ -186,7 +196,17 @@ private:
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow(&show);
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+
+            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            
+            ImGui::InputFloat3("Sun Dir", v);
+            ImGui::End();
+        }
 
         ImGui::Render();    
 
@@ -401,9 +421,14 @@ private:
 
     Game* game;
 
+    float v[3];
+    float p[3];
+
     bool menuSwaped = false;
 
-    bool show = true;
+    bool show = true, show_another_window;
+
+    float clear_color;
 	    
     VkDescriptorPool imguiPool;
 };

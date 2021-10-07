@@ -13,7 +13,7 @@ public:
     inline static VkExtent2D swapChainExtent;
     inline static VkFormat swapChainImageFormat;
     inline static size_t countFrames;
-    inline static glm::vec3 sunPos;
+    inline static glm::vec3 sunDir;
     inline static bool showCursor;
 
     static void check_vk_result(VkResult err)

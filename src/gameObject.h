@@ -11,7 +11,7 @@ class GameObject : public Entity{
 public:
     GameObject(Device* device, Camera* camera) : Entity(device, camera), size(1)
     {
-        
+        model = glm::mat4(1.0f);
     }
     ~GameObject(){
         
@@ -43,6 +43,11 @@ public:
         model = glm::translate(glm::mat4(1.0f), position);
     }
 
+    glm::vec3 GetPosition()
+    {
+        return position * 10.0f;
+    }
+
     void SetSize(float size)
     {
         this->size = size;
@@ -55,15 +60,19 @@ public:
     }
 
     void SetRotate(glm::vec3 rotation)
-    {
-        // needed for rotation
-        glm::vec3 center = (position + rotation) / 0.5f; // vec3(1.5,2.0,0.0) mid point due to angle = 180 deg
-        //glm::vec3 axis = cross((position - rotation), ); // any perpendicular vector to `p1-p0` if `p1-p0` is parallel to (0,0,1) then use `(0,1,0)` instead
+    {   
+        rotation /=10.0f;
+        this->rotate += rotation;
 
-        model = glm::rotate(model, 0.001f, rotation);
+        model = glm::rotate(model, 0.001f, rotate);
     }
 
-    std::string vertFile, fragFile;
+    glm::vec3 GetRotate()
+    {
+        return rotate * 10.0f;
+    }
+
+    std::string vertFile, fragFile;   
 
 private :
     void updateUniformBuffer(float deltaTime) {
@@ -78,7 +87,7 @@ private :
         ubo.view = camera->view;
         ubo.proj = camera->proj;
 
-        ubo.sunPos = Resource::sunPos;
+        ubo.sunDir = Resource::sunDir;
 
         void* data;
         vkMapMemory(device->device, pipeline->uniformBuffersMemory[Resource::currentImage], 0, sizeof(ubo), 0, &data);
@@ -87,8 +96,9 @@ private :
 
     }
 
-    glm::mat4 model;
-    glm::vec3 position;
     float size;
 
+    glm::mat4 model;
+    glm::vec3 position;
+    glm::vec3 rotate;
 };

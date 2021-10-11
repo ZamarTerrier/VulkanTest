@@ -65,6 +65,7 @@ public:
         go->SetSize(glm::vec3(size,size,size));
         go->setVertex(vertices);
         go->setIndices(indices);
+        go->Init();
     }
     ~SkyBox()
     {

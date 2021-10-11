@@ -49,8 +49,7 @@ public:
         createFramebuffers(); 
         for(auto go : gameObjects)
         {
-            renderer->createGraphicsPipeline(go->vertFile, go->fragFile, go->pipeline);  
-            go->Init();
+            renderer->createGraphicsPipeline(go->vertFile, go->fragFile, go->pipeline); 
         }
         createCommandBuffers();
     }

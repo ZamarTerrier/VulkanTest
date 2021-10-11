@@ -26,6 +26,8 @@ public:
         go->SetShadersName(paths.vertShader, paths.fragShader);
         go->setVertex(pObject.vertices);
         go->setIndices(pObject.indices);
+        go->applyLight = false;
+        go->Init();
 
         distance = 250;
 

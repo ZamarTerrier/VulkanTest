@@ -1,8 +1,12 @@
 #version 450
 
+
+layout(binding = 1) uniform sampler2D texSampler;
+
 layout(location = 0) in vec3 fragColor;
 layout(location = 1) in vec3 fragNormal;
 layout(location = 2) in vec3 sunDir;
+layout(location = 3) in vec2 fragTexCoord;
 
 layout(location = 0) out vec4 outColor;
 
@@ -18,5 +22,5 @@ void main() {
 
     vec3 result = amb + diffuse;
 
-    outColor = vec4(result, 1.0f);
+    outColor = vec4(result * texture(texSampler, fragTexCoord).rgb, texture(texSampler, fragTexCoord).a);
 }

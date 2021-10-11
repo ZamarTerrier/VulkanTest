@@ -94,6 +94,8 @@ public:
     }
 
     std::string vertFile, fragFile;   
+    
+    bool applyLight;
 
 private :
     void updateUniformBuffer(float deltaTime) {
@@ -107,7 +109,7 @@ private :
         ubo.view = camera->view;
         ubo.proj = camera->proj;
 
-        ubo.sunDir = Resource::sunDir;
+        ubo.sunDir = applyLight ? Resource::sunDir : glm::vec3(1.0f, -3.0f, -1.0f);
 
         void* data;
         vkMapMemory(device->device, pipeline->uniformBuffersMemory[Resource::currentImage], 0, sizeof(ubo), 0, &data);
